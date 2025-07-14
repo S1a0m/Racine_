@@ -1,23 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
 
   void _copyId(BuildContext context) {
     const id = 'samsonboss#R';
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Identifiant copié : $id")));
-    // Tu peux remplacer par Clipboard.setData si tu importes services.dart
+    Clipboard.setData(const ClipboardData(text: id));
+    HapticFeedback.lightImpact();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text("Identifiant copié : samsonboss#R")),
+    );
   }
 
   void _showAlert(BuildContext context, String message) {
     showDialog(
       context: context,
       builder: (_) => AlertDialog(
-        backgroundColor: Colors.transparent,
+        backgroundColor: Colors.black87,
         title: const Text('Racine', style: TextStyle(color: Colors.white)),
-        content: Text(message, style: const TextStyle(color: Colors.white)),
+        content: Text(message, style: const TextStyle(color: Colors.white70)),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(context),
@@ -28,46 +30,55 @@ class SettingsView extends StatelessWidget {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return /*Scaffold(
-      extendBodyBehindAppBar: true,
-      backgroundColor: Colors.black87,
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Row(
-          children: [
-            Image.asset("assets/racine-logo.png", width: 40),
-            const SizedBox(width: 12),
-            const Text(
-              "Paramètres",
-              style: TextStyle(fontFamily: 'Orbitron', color: Colors.white70),
-            ),
-          ],
+  void _confirmLogout(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        backgroundColor: Colors.black87,
+        title: const Text(
+          "Confirmation",
+          style: TextStyle(color: Colors.white),
+        ),
+        content: const Text(
+          "Voulez-vous vraiment vous déconnecter ?",
+          style: TextStyle(color: Colors.white70),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.info_outline),
-            color: Colors.white70,
-            onPressed: () {}, // à lier à une page d'infos
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Annuler"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              _showAlert(context, "Déconnecté avec succès");
+            },
+            child: const Text(
+              "Se déconnecter",
+              style: TextStyle(color: Colors.redAccent),
+            ),
           ),
         ],
       ),
-      body: */ListView(
-        padding: const EdgeInsets.only(
-          top: kToolbarHeight + 24,
-          left: 16,
-          right: 16,
-        ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(16, 24, 16, 24),
+      child: Column(
         children: [
           _buildSection(
+            icon: Icons.fingerprint,
             title: "Mon identifiant",
             content: "Identifiant : samsonboss#R",
             buttonText: "Copier l'identifiant",
             onPressed: () => _copyId(context),
           ),
           _buildSection(
-            title: "Préférences de confidentialité",
+            icon: Icons.privacy_tip,
+            title: "Confidentialité",
             content:
                 "Gérez les plateformes autorisées à voir vos informations personnelles.",
             buttonText: "Gérer les autorisations",
@@ -77,9 +88,10 @@ class SettingsView extends StatelessWidget {
             ),
           ),
           _buildSection(
+            icon: Icons.security,
             title: "Sécurité",
             content:
-                "Définissez la durée de vos sessions de connexion ou révoquez des connexions.",
+                "Définissez la durée de vos sessions ou révoquez des connexions.",
             buttonText: "Paramètres de session",
             onPressed: () => _showAlert(
               context,
@@ -87,47 +99,36 @@ class SettingsView extends StatelessWidget {
             ),
           ),
           _buildSection(
+            icon: Icons.logout,
             title: "Déconnexion",
             content:
                 "Vous pouvez vous déconnecter de tous les appareils connectés.",
             buttonText: "Se déconnecter",
-            onPressed: () => _showAlert(context, "Déconnecté avec succès"),
+            onPressed: () => _confirmLogout(context),
           ),
-        ],
-      );/*,
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.black.withOpacity(0.3),
-        selectedItemColor: Colors.pinkAccent,
-        unselectedItemColor: Colors.white,
-        currentIndex: 2,
-        onTap: (index) {
-          if (index == 0) Navigator.pushNamed(context, '/home');
-          if (index == 1) Navigator.pushNamed(context, '/notifications');
-          // 2 = settings
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.apps), label: 'Accueil'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.notifications),
-            label: 'Notifications',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Paramètres',
+          const SizedBox(height: 16),
+          _buildSection(
+            icon: Icons.info_outline,
+            title: "À propos",
+            content:
+                "Racine est une solution d'identité numérique développée par WaKiOWa.\nContact : contact@wakowa.africa",
+            buttonText: "Nous contacter",
+            onPressed: () => _showAlert(context, "contact@wakowa.africa"),
           ),
         ],
       ),
-    );*/
+    );
   }
 
   Widget _buildSection({
+    required IconData icon,
     required String title,
     required String content,
     required String buttonText,
     required VoidCallback onPressed,
   }) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: const EdgeInsets.symmetric(vertical: 10),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.05),
@@ -137,30 +138,44 @@ class SettingsView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(
+            children: [
+              Icon(icon, color: Colors.white70),
+              const SizedBox(width: 8),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 10),
           Text(
-            title,
+            content,
             style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Colors.white70,
+              fontSize: 15.5,
+              height: 1.4,
             ),
           ),
-          const SizedBox(height: 8),
-          Text(content, style: const TextStyle(color: Colors.white70)),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFFE52C6A),
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(6),
+                borderRadius: BorderRadius.circular(8),
               ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             ),
             onPressed: onPressed,
             child: Text(
               buttonText,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.white70,
+                color: Colors.white,
               ),
             ),
           ),

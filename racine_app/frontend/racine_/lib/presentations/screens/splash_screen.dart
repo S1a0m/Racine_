@@ -1,94 +1,119 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  String displayedText = '';
+  final String fullText = 'Racine';
+  int index = 0;
+  bool showUnderscore = true;
+
+  Timer? typingTimer;
+  Timer? blinkingTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTyping();
+    _startCursorBlinking();
+  }
+
+  void _startTyping() {
+    typingTimer = Timer.periodic(const Duration(milliseconds: 150), (timer) {
+      if (!mounted) return;
+
+      if (index < fullText.length) {
+        setState(() {
+          displayedText += fullText[index];
+          index++;
+        });
+      } else {
+        timer.cancel();
+        Future.delayed(const Duration(seconds: 1), () {
+          if (mounted) {
+            Navigator.pushReplacementNamed(context, '/login');
+          }
+        });
+      }
+    });
+  }
+
+  void _startCursorBlinking() {
+    blinkingTimer = Timer.periodic(const Duration(milliseconds: 500), (timer) {
+      if (!mounted) return;
+
+      setState(() {
+        showUnderscore = !showUnderscore;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    typingTimer?.cancel();
+    blinkingTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent, // fallback
-      body: SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(24),
-                margin: const EdgeInsets.symmetric(horizontal: 24),
-                decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.2),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Color(0xFF2F5F54)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromRGBO(0, 255, 192, 0.2),
-                      blurRadius: 20,
-                      offset: Offset(0, 0),
-                    ),
-                  ],
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/racine-logo.png',
+              width: 100,
+              height: 100,
+              color: Colors.white70,
+            ),
+            const SizedBox(height: 30),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  displayedText,
+                  style: const TextStyle(
+                    fontFamily: 'Orbitron',
+                    fontSize: 28,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Image.asset(
-                      'assets/racine-logo.png',
-                      width: 100,
-                      fit: BoxFit.contain,
+                AnimatedOpacity(
+                  opacity: showUnderscore ? 1.0 : 0.0,
+                  duration: const Duration(milliseconds: 200),
+                  child: const Text(
+                    '_',
+                    style: TextStyle(
+                      fontFamily: 'Orbitron',
+                      fontSize: 28,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 24),
-                    const Text(
-                      'Bienvenue sur Racine',
-                      style: TextStyle(
-                        fontFamily: 'Orbitron',
-                        fontSize: 20,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE52C6A),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 14,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/login');
-                      },
-                      child: const Text(
-                        'Commencer',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Orbitron',
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
+              ],
+            ),
+            const SizedBox(height: 20),
+            const Text(
+              "Le garde numérique de vos données sur internet",
+              style: TextStyle(
+                fontFamily: 'Orbitron',
+                fontSize: 14,
+                color: Colors.white60,
               ),
-              const SizedBox(height: 24),
-              const Divider(color: Colors.white12),
-              const SizedBox(height: 12),
-              const Text(
-                "© 2025 Racine — une initiative de WaKiOWa",
-                style: TextStyle(color: Colors.white54, fontSize: 12),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                "Contact : support@wakiowa.africa",
-                style: TextStyle(color: Colors.white54, fontSize: 12),
-              ),
-            ],
-          ),
+              textAlign: TextAlign.center,
+            ),
+          ],
         ),
       ),
     );

@@ -37,6 +37,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           _buildIdentityCard(),
           const SizedBox(height: 20),
+          TextButton.icon(
+            onPressed: () {},
+            label: Text('Voir plus'),
+            icon: Icon(Icons.person_2_outlined),
+          ),
+          const SizedBox(height: 20),
           _buildStatsSection(),
           const SizedBox(height: 20),
           _buildConnectionsSection(),
@@ -157,7 +163,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget _buildSecuritySettings() {
     return _buildCard(
       title: 'Paramètres & sécurité',
-      child: Column(
+      child: ListTile(
+        title: const Text(
+          'Accéder aux paramètres',
+          style: TextStyle(color: Colors.white),
+        ),
+        trailing: const Icon(Icons.chevron_right, color: Colors.white54),
+        onTap: () {},
+      ) /*Column(
         children: [
           SwitchListTile(
             value: isPublic,
@@ -180,7 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             onTap: () {},
           ),
         ],
-      ),
+      ),*/,
     );
   }
 
@@ -189,21 +202,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         ElevatedButton.icon(
           onPressed: () {},
-          icon: const Icon(Icons.logout),
+          icon: const Icon(Icons.logout, color: Colors.white70),
           label: const Text(
             'Se déconnecter',
             style: TextStyle(color: Colors.white70),
           ),
           style: ElevatedButton.styleFrom(backgroundColor: Colors.pinkAccent),
         ),
-        const SizedBox(height: 8),
+        /*const SizedBox(height: 8),
         TextButton(
           onPressed: () {},
           child: const Text(
             'Supprimer mon compte',
             style: TextStyle(color: Colors.redAccent),
           ),
-        ),
+        ),*/
       ],
     );
   }
