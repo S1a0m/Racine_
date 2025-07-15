@@ -35,7 +35,7 @@ class _HomeViewState extends State<HomeView>
     {
       'name': 'Tôswè e-commerce',
       'details': 'Dernière connexion : 27 juin 2025',
-      'hasNew': true,
+      'hasNew': false,
       'icon': 'assets/racine-logo.png',
     },
     {
@@ -53,7 +53,7 @@ class _HomeViewState extends State<HomeView>
     {
       'name': 'YonnApp Forum',
       'details': 'Connexion anonyme acceptée',
-      'hasNew': false,
+      'hasNew': true,
       'icon': 'assets/racine-logo.png',
     },
     {
@@ -105,6 +105,13 @@ class _HomeViewState extends State<HomeView>
                 color: Colors.black.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: const Color(0xFF2F5F54)),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromRGBO(0, 255, 192, 0.2),
+                    blurRadius: 20,
+                    offset: Offset(0, 0),
+                  ),
+                ],
               ),
               child: Row(
                 children: [

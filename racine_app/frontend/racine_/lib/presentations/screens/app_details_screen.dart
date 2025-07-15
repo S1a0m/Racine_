@@ -14,7 +14,7 @@ class AppDetailsScreen extends StatelessWidget {
         title: Text("AppName", style: const TextStyle(fontFamily: 'Orbitron')),
         actions: [
           IconButton(
-            icon: const Icon(Icons.open_in_new),
+            icon: const Icon(Icons.notifications),
             onPressed: () async {
               const url = "https://example.com";
               if (await canLaunchUrl(Uri.parse(url))) {
@@ -67,10 +67,10 @@ class AppDetailsScreen extends StatelessWidget {
             style: ElevatedButton.styleFrom(backgroundColor: Colors.pinkAccent),
             onPressed: () {},
           ),
-          TextButton(
+          /*TextButton(
             onPressed: () {},
             child: const Text("Afficher l'historique complet des connexions"),
-          ),
+          ),*/
           OutlinedButton.icon(
             onPressed: () {},
             icon: const Icon(Icons.logout, color: Colors.white70),

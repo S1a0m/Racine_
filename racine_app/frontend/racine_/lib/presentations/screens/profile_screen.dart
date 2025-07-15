@@ -7,9 +7,33 @@ class ProfileScreen extends StatefulWidget {
   State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends State<ProfileScreen>
+    with SingleTickerProviderStateMixin {
   bool showId = true;
   bool isPublic = true;
+  bool isVerified = true;
+
+  late AnimationController _pulseController;
+  late Animation<double> _opacityAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat(reverse: true);
+
+    _opacityAnimation = Tween(begin: 1.0, end: 0.4).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +45,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         foregroundColor: Colors.white70,
         elevation: 0,
         title: const Text(
-          'Mon Profil',
+          'Profile : Particulier',
           style: TextStyle(fontFamily: 'Orbitron'),
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.open_in_new),
+            icon: const Icon(Icons.settings),
             onPressed: () {},
-            tooltip: "Visiter la plateforme",
+            tooltip: "Paramètres",
           ),
         ],
       ),
@@ -37,17 +61,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         children: [
           _buildIdentityCard(),
           const SizedBox(height: 20),
-          TextButton.icon(
-            onPressed: () {},
-            label: Text('Voir plus'),
-            icon: Icon(Icons.person_2_outlined),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: TextButton.icon(
+              onPressed: () {},
+              label: Text('Voir plus'),
+              icon: Icon(Icons.person_2_outlined),
+            ),
           ),
           const SizedBox(height: 20),
           _buildStatsSection(),
           const SizedBox(height: 20),
           _buildConnectionsSection(),
-          const SizedBox(height: 20),
-          _buildSecuritySettings(),
+          /*const SizedBox(height: 20),
+          _buildSecuritySettings(),*/
           const SizedBox(height: 20),
           _buildActions(),
         ],
@@ -72,9 +99,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       child: Column(
         children: [
-          const CircleAvatar(
-            radius: 36,
-            backgroundImage: AssetImage('assets/profile.png'),
+          Stack(
+            children: [
+              const CircleAvatar(
+                radius: 36,
+                backgroundImage: AssetImage('assets/profile.png'),
+              ),
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: isVerified
+                    ? FadeTransition(
+                        opacity: _opacityAnimation,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          decoration: BoxDecoration(
+                            color: Colors.blueAccent,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.black, width: 1),
+                          ),
+                          child: const Icon(
+                            Icons.check_circle,
+                            size: 14,
+                            color: Colors.white,
+                          ),
+                        ),
+                      )
+                    : Container(
+                        padding: const EdgeInsets.all(2),
+                        decoration: BoxDecoration(
+                          color: Colors.white10,
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.black, width: 1),
+                        ),
+                        child: const Icon(
+                          Icons.cancel,
+                          size: 14,
+                          color: Colors.redAccent,
+                        ),
+                      ),
+              ),
+            ],
           ),
           const SizedBox(height: 12),
           const Text(
@@ -102,10 +167,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           ),
-          Text(
+          /*Text(
             'Identifiant particulier',
             style: TextStyle(color: Colors.white54, fontSize: 12),
-          ),
+          ),*/
         ],
       ),
     );

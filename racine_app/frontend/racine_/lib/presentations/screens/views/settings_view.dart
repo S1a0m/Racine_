@@ -77,6 +77,17 @@ class SettingsView extends StatelessWidget {
             onPressed: () => _copyId(context),
           ),
           _buildSection(
+            icon: Icons.person,
+            title: "Profile",
+            content:
+                "Ajoutez de nouvelles informations et vérifiez votre profile.",
+            buttonText: "Mettre à jour mon profile",
+            onPressed: () => _showAlert(
+              context,
+              "Redirection vers la modification du profile...",
+            ),
+          ),
+          _buildSection(
             icon: Icons.privacy_tip,
             title: "Confidentialité",
             content:

@@ -105,7 +105,7 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             const SizedBox(height: 20),
             const Text(
-              "Le garde numérique de vos données sur internet",
+              "Votre gardien numérique.",
               style: TextStyle(
                 fontFamily: 'Orbitron',
                 fontSize: 14,

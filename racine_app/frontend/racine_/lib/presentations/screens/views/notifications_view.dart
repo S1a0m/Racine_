@@ -36,7 +36,13 @@ class _NotificationsViewState extends State<NotificationsView> {
   ];
 
   String selectedFilter = 'Tout';
-  final List<String> filters = ['Tout', 'Sécurité', 'Plateformes', 'Activité'];
+  final List<String> filters = [
+    'Tout',
+    'Plateformes',
+    'Applications',
+    'Activité',
+    'Sécurité',
+  ];
 
   int get unreadCount => notifications.where((n) => n['read'] == false).length;
 
@@ -53,7 +59,7 @@ class _NotificationsViewState extends State<NotificationsView> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Row(
             children: [
-              const Text(
+              /*const Text(
                 "Notifications",
                 style: TextStyle(
                   fontSize: 20,
@@ -61,7 +67,7 @@ class _NotificationsViewState extends State<NotificationsView> {
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 8),*/
               if (unreadCount > 0)
                 Container(
                   padding: const EdgeInsets.symmetric(
