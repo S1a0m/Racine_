@@ -64,7 +64,9 @@ class _ProfileScreenState extends State<ProfileScreen>
           Align(
             alignment: Alignment.centerLeft,
             child: TextButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/entitiesform');
+              },
               label: Text('Voir plus'),
               icon: Icon(Icons.person_2_outlined),
             ),

@@ -41,11 +41,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.black, // Full dark
       body: Container(
+        padding: const EdgeInsets.all(24),
         width: double.infinity,
         height: double.infinity,
-        padding: const EdgeInsets.all(24),
         child: Center(
           child: Container(
             padding: const EdgeInsets.all(24),
@@ -53,10 +53,10 @@ class _LoginScreenState extends State<LoginScreen> {
             decoration: BoxDecoration(
               color: Colors.black.withOpacity(0.2),
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Color(0xFF2F5F54)),
+              border: Border.all(color: const Color(0xFF2F5F54)),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromRGBO(0, 255, 192, 0.2),
+                  color: const Color.fromRGBO(0, 255, 192, 0.2),
                   blurRadius: 20,
                 ),
               ],
@@ -65,63 +65,54 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Image.asset('assets/racine-logo.png', width: 80),
-                const SizedBox(height: 16),
+                const SizedBox(height: 20),
                 Text(
                   step == 1
-                      ? 'Entrer mon identifiant'
-                      : 'Confirmation par code',
+                      ? "Entrer mon identifiant"
+                      : "Confirmation par code",
                   style: const TextStyle(
                     fontFamily: 'Orbitron',
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 24),
+
                 if (step == 1) ...[
-                  TextField(
+                  _buildTextField(
                     controller: idController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: _inputDecoration("ex: samsonboss#R"),
+                    hint: "ex: samsonboss#R",
+                    icon: Icons.alternate_email,
                   ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: nextStep,
-                    style: _buttonStyle(),
-                    child: const Text(
-                      "Confirmer",
-                      style: TextStyle(color: Colors.white70),
-                    ),
-                  ),
+                  const SizedBox(height: 20),
+                  _buildButton("Confirmer", nextStep),
                 ] else ...[
                   const Text(
                     "Un SMS vous a été envoyé. Entrez le code reçu :",
                     style: TextStyle(color: Colors.white70),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 12),
-                  TextField(
-                    controller: codeController,
-                    style: const TextStyle(color: Colors.white),
-                    decoration: _inputDecoration("Code SMS"),
-                    keyboardType: TextInputType.number,
-                  ),
                   const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: verifyCode,
-                    style: _buttonStyle(),
-                    child: const Text(
-                      "Confirmer",
-                      style: TextStyle(color: Colors.white70),
-                    ),
+                  _buildTextField(
+                    controller: codeController,
+                    hint: "Code SMS",
+                    icon: Icons.message,
+                    isNumber: true,
                   ),
+                  const SizedBox(height: 20),
+                  _buildButton("Vérifier", verifyCode),
                 ],
-                const SizedBox(height: 16),
+
+                const SizedBox(height: 24),
                 TextButton(
                   onPressed: () => Navigator.pushNamed(context, '/signup'),
                   child: const Text(
                     "Pas encore inscrit ? S'inscrire",
-                    style: TextStyle(color: Color(0xFF10B981)),
+                    style: TextStyle(
+                      color: Color(0xFF10B981),
+                      fontFamily: 'Orbitron',
+                    ),
                   ),
                 ),
               ],
@@ -132,28 +123,48 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  InputDecoration _inputDecoration(String hint) {
-    return InputDecoration(
-      filled: true,
-      fillColor: Colors.white10,
-      hintText: hint,
-      hintStyle: const TextStyle(color: Colors.white54),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12),
-        borderSide: BorderSide.none,
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hint,
+    IconData? icon,
+    bool isNumber = false,
+  }) {
+    return TextField(
+      controller: controller,
+      style: const TextStyle(color: Colors.white),
+      keyboardType: isNumber ? TextInputType.number : TextInputType.text,
+      decoration: InputDecoration(
+        prefixIcon: icon != null ? Icon(icon, color: Colors.white54) : null,
+        filled: true,
+        fillColor: Colors.white10,
+        hintText: hint,
+        hintStyle: const TextStyle(color: Colors.white54),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Color(0xFF10B981), width: 1),
+        ),
       ),
     );
   }
 
-  ButtonStyle _buttonStyle() {
-    return ElevatedButton.styleFrom(
-      backgroundColor: const Color(0xFFE52C6A),
-      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      textStyle: const TextStyle(
-        fontWeight: FontWeight.bold,
-        fontFamily: 'Orbitron',
+  Widget _buildButton(String label, VoidCallback onPressed) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFFE52C6A),
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        textStyle: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontFamily: 'Orbitron',
+          fontSize: 14,
+        ),
       ),
+      child: Text(label, style: const TextStyle(color: Colors.white70)),
     );
   }
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:racine/presentations/screens/app_details_screen.dart';
-//import 'package:racine/presentations/screens/entities_form_screen.dart';
+import 'package:racine/presentations/screens/entities_form_screen.dart';
 import 'package:racine/presentations/screens/signup_screen.dart';
 import 'package:racine/presentations/screens/splash_screen.dart';
 import '../screens/home_screen.dart';
@@ -17,6 +17,6 @@ class RacineRoutes {
     '/login': (_) => const LoginScreen(),
     '/signup': (_) => const SignupScreen(),
     '/detailapp': (_) => const AppDetailsScreen(),
-    //'/entitiesform': (_) => FormulaireApp(),
+    '/entitiesform': (_) => FormulaireApp(),
   };
 }

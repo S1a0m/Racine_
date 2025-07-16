@@ -28,6 +28,14 @@ flutter:
   assets:
     - assets/racine-logo.png
     - assets/profile.png
+    - assets/icons/facebook.jpeg
+    - assets/icons/instagram.jpeg
+    - assets/icons/twitter.jpeg
+    - assets/icons/linkedin.jpeg
+    - assets/icons/youtube.png
+    - assets/icons/tiktok.png
+    - assets/icons/whatsapp.jpeg
+    - assets/icons/discord.png
 
   fonts:
     - family: Orbitron

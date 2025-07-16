@@ -21,52 +21,52 @@ class _HomeViewState extends State<HomeView>
 
   final List<Map<String, dynamic>> apps = [
     {
-      'name': 'LearnAfrik',
+      'name': 'Facebook',
       'details': 'Connecté depuis le 10 juin 2025',
       'hasNew': true,
-      'icon': 'assets/racine-logo.png',
+      'icon': 'assets/icons/facebook.jpeg',
     },
     {
-      'name': 'YonnApp Forum',
+      'name': 'Instagram',
       'details': 'Connexion anonyme acceptée',
       'hasNew': false,
-      'icon': 'assets/racine-logo.png',
+      'icon': 'assets/icons/instagram.jpeg',
     },
     {
-      'name': 'Tôswè e-commerce',
+      'name': 'Twitter',
       'details': 'Dernière connexion : 27 juin 2025',
       'hasNew': false,
-      'icon': 'assets/racine-logo.png',
+      'icon': 'assets/icons/twitter.jpeg',
     },
     {
-      'name': 'Génie Auth',
+      'name': 'LinkedIn',
       'details': 'Connecté en tant qu’anonyme',
       'hasNew': false,
-      'icon': 'assets/racine-logo.png',
+      'icon': 'assets/icons/linkedin.jpeg',
     },
     {
-      'name': 'LearnAfrik',
+      'name': 'Youtube',
       'details': 'Connecté depuis le 10 juin 2025',
       'hasNew': true,
-      'icon': 'assets/racine-logo.png',
+      'icon': 'assets/icons/youtube.png',
     },
     {
-      'name': 'YonnApp Forum',
+      'name': 'Tiktok',
       'details': 'Connexion anonyme acceptée',
       'hasNew': true,
-      'icon': 'assets/racine-logo.png',
+      'icon': 'assets/icons/tiktok.png',
     },
     {
-      'name': 'Tôswè e-commerce',
+      'name': 'Whatsapp',
       'details': 'Dernière connexion : 27 juin 2025',
       'hasNew': true,
-      'icon': 'assets/racine-logo.png',
+      'icon': 'assets/icons/whatsapp.jpeg',
     },
     {
-      'name': 'Génie Auth',
+      'name': 'Discord',
       'details': 'Connecté en tant qu’anonyme',
       'hasNew': false,
-      'icon': 'assets/racine-logo.png',
+      'icon': 'assets/icons/discord.png',
     },
   ];
 
@@ -297,7 +297,13 @@ class _HomeViewState extends State<HomeView>
                         Positioned.fill(
                           child: Opacity(
                             opacity: 0.2, //0.05,
-                            child: Image.asset(app['icon'], fit: BoxFit.cover),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.asset(
+                                app['icon'],
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                           ),
                         ),
                         Padding(
